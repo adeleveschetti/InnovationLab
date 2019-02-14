@@ -28,7 +28,11 @@ Each tasks has the own method in the contract and only the public methods can be
 First tests were carried out at command lines in the console of the development environment, then the javascript code was written to manage input from external sources, in this case input from a web page with forms and buttons.
 The web page was created exclusively to have input sources and to have feedback on the correct writing and reading of data on the blockchain.
 
+<img src="images/POC_screen_1.png" alt="pocScreen1" height="200"/> <img src="images/POC_screen_3.png" alt="pocScreen3" height="200"/>
+
 Through Ganache we then saw the "physical" creation of the blocks and the distribution of the individual transactions within it.
+
+<img src="images/Ganache_screen_3.png" alt="ganach3" width="200"/> <img src="images/Ganache_screen_1.png" alt="ganache1" width="200"/> <img src="images/Ganache_screen_2.png" alt="ganache2" width="200"/>
 
 ## Development information
 
