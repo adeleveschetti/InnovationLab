@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Demetra - POC 0.4</title>
+
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.1/dist/bootstrap-table.min.css">
+  <script src="https://unpkg.com/bootstrap-table@1.14.1/dist/bootstrap-table.min.js"></script>
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="css/business-casual.min.css" rel="stylesheet">
+  <link href="css/business-casual.css" rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body style="color:rgb(0, 0, 0)">
+
+  <!-- <h1 class="site-heading text-center text-white d-none d-lg-block">
+    <span class="site-heading-upper text-primary mb-3">A Free Bootstrap 4 Business Theme</span>
+    <span class="site-heading-lower">Business Casual</span>
+  </h1> -->
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand text-uppercase text-expanded font-weight-bold d-lg-none" href="#">Start Bootstrap</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="pag1.html">Home</a>
+          </li>
+          <li class="nav-item active px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="index.html">Portale CIR
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="pag3.html">Portale Fornitori</a>
+          </li>
+          <li class="nav-item px-lg-4">
+            <a class="nav-link text-uppercase text-expanded" href="pag4.html">riepilogo offerte</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <br />
+  <h1 class="titlePage text-center">Portale Operazioni CIRFood</h1>
+  <br />
+
+  <div class="container">
+    <div class="col-lg-12">
+      <!-- <h1 class="text-center">POC 0.3(Pixie)</h1> -->
+      <p class="text-center subTitlePage">Aggiungi Richiesta</p>
+
+      <div class="col-md-10" style="margin: 0 auto">
+
+        <form id="booking-form" class="booking-form" onSubmit="App.request(); return false;">
+          <div class="form-group">
+
+            <div class="form-destination">
+              <label for="destination">Nome Derrata:</label>
+              <input type="text" id="nome" name="nome" placeholder="ES. Pomodoro" />
+            </div>
+
+            <div class="form-quantity">
+              <label for="quantity">Qualità</label>
+              <input type="number" name="quality" id="quality" name="quality" value="1" min="1" max="5">
+              <span class="modify-qty minus" onClick="Giam()"><i class="zmdi zmdi-chevron-down"></i></span>
+              <!-- <input type="submit" class="btn btn-primary"> -->
+            </div>
+
+
+            <div class="form-submit">
+              <input type="submit" id="submit" class="btn-success" value="Invia Richiesta" />
+            </div>
+
+          </div>
+        </form>
+
+
+      </div>
+
+
+      <hr />
+
+      <br />
+
+      <p class="text-center subTitlePage">Riepilogo Richieste</p>
+
+      <div class="container col-md-10" style="margin: 0 auto">
+
+        <div class="container containerTab booking-form">
+
+          <div class=" my-custom-scrollbar">
+
+            <table class="table table-striped mb-0" style="border-top: 1px solid #16191d;">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Qualità</th>
+                  <th scope="col">Stato</th>
+                  <th scope="col">Azioni</th>
+                </tr>
+              </thead>
+              <tbody class=" my-custom-scrollbar" id="requestResults">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br />
+      <hr />
+      <br />
+
+
+
+      <p class="text-center subTitlePage">Riepilogo Ordini</p>
+
+      <div class="container col-md-10" style="margin: 0 auto">
+        <div class="container containerTab booking-form">
+          <div class=" my-custom-scrollbar">
+
+            <table class="table table-striped mb-0">
+              <thead>
+                <tr>
+
+                  <th scope="col">#</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Qualità</th>
+                  <th scope="col">Fornitore</th>
+                  <th scope="col">Spedizione</th>
+                  <th scope="col">Check</th>
+                </tr>
+              </thead>
+              <tbody id="orderResults">
+                
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+
+        <hr />
+
+
+        <p id="accountAddress" class="text-center"></p>
+        <p id="contractAddress" class="text-center"></p>
+        <p id="owner" class="text-center"></p>
+
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <hr>
+
+  <footer class="footer text-faded text-center py-5">
+    <div class="container">
+      <p class="m-0 small" style="color:black">Copyright &copy; Simone Siena 2019</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/web3.min.js"></script>
+  <script src="js/truffle-contract.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

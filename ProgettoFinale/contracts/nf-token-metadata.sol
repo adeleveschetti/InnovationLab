@@ -1,0 +1,205 @@
+pragma solidity ^0.5.6;
+import "./nf-token.sol";
+import "./erc721-metadata.sol";
+
+/**
+ * @dev Optional metadata implementation for ERC-721 non-fungible token standard.
+ */
+contract NFTokenMetadata is
+  NFToken,
+  ERC721Metadata
+{
+///
+/**
+   * @dev Mapping from NFT ID to metadata prova.
+   */
+  mapping (uint256 => string) internal idToProva;
+
+/////
+
+  /**
+   * @dev A descriptive name for a collection of NFTs.
+   */
+  string internal nftName;
+  /**
+   * @dev An abbreviated name for NFTokens.
+   */
+  string internal nftSymbol;
+
+  /**
+   * @dev Mapping from NFT ID to metadata uri.
+   */
+  mapping (uint256 => string) internal idToUri;
+  mapping (uint256 =>  mapping (uint256 => uint256)) internal idToIngrediente;
+  mapping (uint256 => uint256) internal idToIngredienteCount;
+  mapping (uint256 => uint256) internal idToQuantity;
+
+
+
+
+
+  /**
+   * @dev Contract constructor.
+   * @notice When implementing this contract don't forget to set nftName and nftSymbol.
+   */
+  constructor()
+    public
+  {
+    supportedInterfaces[0x5b5e139f] = true; // ERC721Metadata
+  }
+
+  /**
+   * @dev Returns a descriptive name for a collection of NFTokens.
+   * @return Representing name.
+   */
+  function name()
+    external
+    view
+    returns (string memory _name)
+  {
+    _name = nftName;
+  }
+
+  /**
+   * @dev Returns an abbreviated name for NFTokens.
+   * @return Representing symbol.
+   */
+  function symbol()
+    external
+    view
+    returns (string memory _symbol)
+  {
+    _symbol = nftSymbol;
+  }
+
+  /**
+   * @dev A distinct URI (RFC 3986) for a given NFT.
+   * @param _tokenId Id for which we want uri.
+   * @return URI of _tokenId.
+   */
+  function tokenURI(
+    uint256 _tokenId
+  )
+    external
+    view
+    validNFToken(_tokenId)
+    returns (string memory)
+  {
+    return idToUri[_tokenId];
+  }
+
+////////////
+
+  function tokenName(
+  uint256 _tokenId
+)
+  external
+  view
+  validNFToken(_tokenId)
+  returns (string memory)
+{
+  return idToProva[_tokenId];
+}
+
+  function quantity(
+  uint256 _tokenId
+)
+  external
+  view
+  validNFToken(_tokenId)
+  returns (uint256)
+{
+  return idToQuantity[_tokenId];
+}
+
+function readIngrediente(
+  uint256 _tokenId,
+  uint256 _number
+)
+  external
+  view
+  validNFToken(_tokenId)
+  returns (uint256)
+{
+  require (idToIngredienteCount[_tokenId] > 0 && idToIngredienteCount[_tokenId] <= 10, "not valid arguments");
+  return idToIngrediente[_tokenId][_number];
+}
+
+
+
+  /////////
+  /**
+   * @dev Burns a NFT.
+   * @notice This is an internal function which should be called from user-implemented external
+   * burn function. Its purpose is to show and properly initialize data structures when using this
+   * implementation. Also, note that this burn implementation allows the minter to re-mint a burned
+   * NFT.
+   * @param _tokenId ID of the NFT to be burned.
+   */
+  function _burn(
+    uint256 _tokenId
+  )
+    internal
+  {
+    super._burn(_tokenId);
+
+    if (bytes(idToUri[_tokenId]).length != 0)
+    {
+      delete idToUri[_tokenId];
+    }
+    if (bytes(idToProva[_tokenId]).length != 0)
+    {
+      delete idToProva[_tokenId];
+    }
+    if (idToIngrediente[_tokenId][1] != 0)
+    {
+      delete idToIngrediente[_tokenId][1];
+    }
+  }
+
+  /**
+   * @dev Set a distinct URI (RFC 3986) for a given NFT ID.
+   * @notice This is an internal function which should be called from user-implemented external
+   * function. Its purpose is to show and properly initialize data structures when using this
+   * implementation.
+   * @param _tokenId Id for which we want uri.
+   * @param _uri String representing RFC 3986 URI.
+   */
+  function _setTokenUri(
+    uint256 _tokenId,
+    string memory _uri
+  )
+    internal
+    validNFToken(_tokenId)
+  {
+    idToUri[_tokenId] = _uri;
+  }
+
+
+///    
+
+
+function _setTokenProva(
+    uint256 _tokenId,
+    string memory _prova
+  )
+    internal
+    validNFToken(_tokenId)
+  {
+    idToProva[_tokenId] = _prova;
+  }
+
+function _setIngrediente(
+    uint256 _tokenId,
+    uint256 _ingrediente
+  )
+    internal
+    validNFToken(_tokenId)
+  {
+    idToIngredienteCount[_tokenId]++;
+    idToIngrediente[_tokenId][idToIngredienteCount[_tokenId]]=_ingrediente;
+  }
+
+
+
+}

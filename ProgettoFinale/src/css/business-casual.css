@@ -1,0 +1,270 @@
+.my-custom-scrollbar {
+  position: relative;
+  height: 300px;
+  overflow: auto;
+}
+
+.my-custom-scrollbar2 {
+  position: relative;
+  height: 400px;
+  overflow: auto;
+}
+
+.my-custom-scrollbar3 {
+  position: relative;
+  height: 250px;
+  overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+.text-faded {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.containerForm {
+  /* width: 750px; */
+  background: rgba(11, 13, 24, 0.6);
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 15px;
+  -ms-border-radius: 10px;
+}
+
+.booking-form {
+  padding: 35px 70px 35px 70px;
+}
+
+.booking-form2 {
+  padding: 35px 50px 35px 50px;
+}
+
+input {
+  border: none;
+  background: #fff;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  display: block;
+  font-family: Poppins;
+  position: relative;
+  z-index: 9;
+}
+
+input::-webkit-input-placeholder {
+  color: #999;
+}
+
+input::-moz-placeholder {
+  color: #999;
+}
+
+input:-ms-input-placeholder {
+  color: #999;
+}
+
+input:-moz-placeholder {
+  color: #999;
+}
+
+#quantity {
+  color: #999;
+}
+
+n .form-group {
+  align-items: center;
+  -moz-align-items: center;
+  -webkit-align-items: center;
+  -o-align-items: center;
+  -ms-align-items: center;
+  justify-content: space-between;
+  -moz-justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -o-justify-content: space-between;
+  -ms-justify-content: space-between;
+}
+
+.form-destination {
+  display: inline-block;
+  width: 50%;
+}
+.form-destination2 {
+  display: inline-block;
+  width: 80px;
+  height: 25px;;
+}
+.form-date-from, .form-date-to {
+  width: 155px;
+}
+
+.form-quantity {
+  width: 18%;
+  position: relative;
+  display: inline-block;
+}
+.form-quantity2 {
+  height: 25px;;
+
+  width: 55px;
+  position: relative;
+  display: inline-block;
+}
+
+.form-submit {
+  width: 30%;
+  display: inline-block;
+}
+
+.modify-qty {
+  position: absolute;
+  right: 12px;
+  font-size: 18px;
+  color: #999;
+  z-index: 99;
+  cursor: pointer;
+}
+
+.plus {
+  top: 23px;
+}
+
+.minus {
+  bottom: 0px;
+}
+
+.form-icon {
+  position: relative;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.submit {
+  background: #df902a;
+  color: #222;
+  font-size: 17px;
+  /* margin-top: 23px;
+      padding: 15px 20px; */
+  cursor: pointer;
+}
+
+.submit:hover {
+  background-color: #bd781f;
+}
+
+.btn-del{
+  border-radius: 7px;
+  background-color: #e9e9e9;
+  color: rgb(17, 121, 3);
+  border: #000000;
+  box-shadow:  0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
+}
+
+
+.btn-del:hover {
+  background-color: rgb(17, 121, 3); /* Green */
+  color: rgb(0, 0, 0);
+}
+.btn-del:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-check{
+  background: #df902a;
+  color: #222;
+  border: #000000;
+
+  border-radius: 15px;
+  box-shadow:  0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
+}
+.btn-check:hover {
+  background-color: #bd781f;
+}
+.btn-check.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.containerTab{
+  /* width: 750px; */
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 15px;
+  -ms-border-radius: 10px;
+}
+
+
+
+.card-body {
+  flex: 1 1 auto;
+}
+.card-title {
+  font-size: 2rem;
+ margin-bottom: .75rem;
+ font-weight: bold;
+}
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
+.h4{
+  font-size: .5rem;
+}
+
+.pClass {
+  font-size: 2.5rem;
+
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+.h-100 {
+  height: 100%!important;
+}
+
+
+.titlePage{
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+text-transform: uppercase;
+line-height: 1;
+font-family: Raleway;
+}
+.subTitlePage{
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 300;
+line-height: 1;
+}
+
