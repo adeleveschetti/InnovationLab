@@ -1,0 +1,228 @@
+module Pane {
+    // risorsa che rappresenta il nostro token Pane
+    resource T {
+        // quantita di pane 
+        quantita: u64,
+    }
+
+    // chi possiede questa risorsa e in grado di sfornare nuovo pane
+    resource LicenzaFornaio {}
+
+    resource MaxPaneMercato {
+        // la somma massima di pane disponibile sul mercato
+        totale_pane: u64,
+    }
+
+    public initialize() {
+        // solo i distributori del token possono chiamare questa funzione, inserire indirizzo
+        // commento perche senno non parte
+        // assert(get_txn_sender() == (0xA550C18), 1);
+
+        move_to_sender<LicenzaFornaio>(LicenzaFornaio{});
+        move_to_sender<MaxPaneMercato>(MaxPaneMercato { totale_pane: 0 });
+
+        return;
+    }
+
+    // sforna nuova pane, chiamabile solamente da un indirizzo che possiede la LicenzaFornaio
+    public sforna_con_licenza(quantita_da_sfornare: u64) : Self.T acquires LicenzaFornaio, MaxPaneMercato {
+        return Self.sforna(move(quantita_da_sfornare), borrow_global<LicenzaFornaio>(get_txn_sender()));
+    }
+
+    // sforna nuovo pane, si puo fare solo se il chiamante possiede una reference a LicenzaFornaio
+    public sforna(quantita_da_sfornare: u64, licenza: &Self.LicenzaFornaio): Self.T acquires MaxPaneMercato {
+        let max_pane_ref: &mut Self.MaxPaneMercato;
+        let max_pane_quantita_totale: u64;
+
+        // muove Licenza sullo stack e poi fa pop, rimuovendo la reference per evitare future 
+        // dangling reference.
+        
+        _ = move(licenza);
+
+        // aggiorna la risorsa MaxPane con il pane_da_sfornare nuovo
+        max_pane_ref = borrow_global_mut<MaxPaneMercato>((0xA550C18));
+        max_pane_quantita_totale = *&copy(max_pane_ref).totale_pane;
+        *(&mut move(max_pane_ref).totale_pane) = move(max_pane_quantita_totale) + copy(quantita_da_sfornare);
+
+        // pack
+        return T{quantita: move(quantita_da_sfornare)};
+    }
+
+    // per transazoni di prova non potendo usare testnet
+    public sforna_senza_licenza(quantita_da_sfornare: u64): Self.T {
+        return T{quantita: move(quantita_da_sfornare)};
+    }
+
+    // getter MaxPane
+    public get_max_pane(): u64 acquires MaxPaneMercato {
+        return *&(borrow_global<MaxPaneMercato>(0xA550C18)).totale_pane;
+    }
+
+    // crea una nuova risorsa Pane.T con quantita 0
+    public zero(): Self.T {
+        // pack 
+        return T{quantita: 0};
+    }
+
+    // getter quantita di Pane.T
+    public get_quantita(pane_ref: &Self.T): u64 {
+        return *&move(pane_ref).quantita;
+    }
+
+    // spezza il pane in due fette e le ritorna entrambe
+    // simile a prendi ma ritorna entrambe le fette di pane
+
+    public spezza(pane: Self.T, quantita_da_spezzare: u64): Self.T * Self.T {
+        let altro_pane: Self.T;
+        altro_pane = Self.prendi(&mut pane, move(quantita_da_spezzare));
+        return move(pane), move(altro_pane);
+    }
+
+    // Divide il pane in due parti
+    // Il pane originale avra valore = valore iniziale - valore da ritirare
+    // Il nuovo pane avra valore = valore da ritirare 
+    public prendi(pane_ref: &mut Self.T, quantita_da_ritirare: u64): Self.T {
+        let quantita_tmp: u64;
+        
+        quantita_tmp = *(&mut copy(pane_ref).quantita);
+        assert(copy(quantita_tmp) >= copy(quantita_da_ritirare), 10);
+
+        *(&mut move(pane_ref).quantita) = move(quantita_tmp) - copy(quantita_da_ritirare);
+        return T{quantita: move(quantita_da_ritirare)};
+    }
+
+    // Unisce il valore dei due paneToken e ritorna il pane1 contenente la somma
+    public unisci(pane1: Self.T, pane2: Self.T): Self.T  {
+        Self.dai(&mut pane1, move(pane2));
+        return move(pane1);
+    }
+
+    // aggiungi a *pane_ref il contenuto di pane_da_dare
+    // pane_da_dare viene consumato 
+    public dai(pane_ref: &mut Self.T, pane_da_dare: Self.T) {
+        let quantita_tmp: u64;
+        // salva il totale del pane
+        let quantita_da_dare: u64;
+
+        quantita_tmp = *(&mut copy(pane_ref).quantita);
+
+        // fa unpack di pane_da_dare e salva la sua quantita in quantita_da_dare
+        // se avessi scritto solamente T { quantita } avrei fatto unpack ma senza salvare il valore
+        T { quantita: quantita_da_dare } = move(pane_da_dare);
+        *(&mut move(pane_ref).quantita) = move(quantita_tmp) + move(quantita_da_dare);
+        return;
+    }
+
+    // fa la stessa cosa di unisci
+    public dai2(pane_da_prendere: Self.T, pane_da_dare: Self.T) : Self.T{ 
+        let quantita_tmp: u64;
+        let quantita_tmp2: u64;
+        
+        T { quantita : quantita_tmp } = move(pane_da_dare);
+        T { quantita : quantita_tmp2 } = move(pane_da_prendere);
+
+        quantita_tmp2 = copy(quantita_tmp2) + copy(quantita_tmp);
+        return T{quantita: move(quantita_tmp2)};
+    }
+
+    // generalmente per i token non si puo bruciare un token dal nulla
+    // quindi si controlla che la risorsa abbia valore 0
+    public destroy_zero(pane: Self.T) {
+        let quantita_distrutta: u64;
+        let ciao: u64;
+        //unpack di pane
+        T {quantita : quantita_distrutta} = move(pane);
+        ciao = move(quantita_distrutta);
+        assert(move(ciao) == 0, 11);
+        return;
+    }
+
+    public distruggi(pane: Self.T){
+        let quantita_distrutta: u64;
+        let ciao: u64;
+        //unpack di pane
+        T {quantita : quantita_distrutta} = move(pane);
+        ciao = move(quantita_distrutta);
+        return;
+    }
+    
+    public dai_una_parte(pane_ref: &mut Self.T, pane_da_dare: Self.T, quantita_da_dare: u64){
+        let quantita_tmp: u64;
+        let quantita_totale_mittente: u64;
+
+        quantita_tmp = *(&mut copy(pane_ref).quantita);
+        
+        // prima rompo la risorsa, ci modifico il valore poi gliela restituisco
+        T {quantita: quantita_totale_mittente} = move(pane_da_dare);
+       
+        quantita_totale_mittente = copy(quantita_totale_mittente) - copy(quantita_da_dare);
+
+        // aumento la risorsa
+        *(&mut move(pane_ref).quantita) = move(quantita_tmp) + move(quantita_da_dare);
+
+        // restituisco la risorsa pane al mittente diminuita della quantita_da_dare
+        move_to_sender<T>(T{quantita: move(quantita_totale_mittente)});
+
+        return;
+    }
+
+    // acquires
+    //This is an annotation that tells the bytecode verifier which types a procedure 
+    //(or its callees) may borrow or move from global state.
+    //From a programmer perspective, this means that you must add acquires T for any procedure that
+    //    performs borrow_global<T>
+    //    performs move_from<T>
+    //    calls a procedure annotated with acquires T
+    //
+    
+}
+
+//! new-transaction
+import {{default}}.Pane;
+
+main() {
+    let p: Pane.T;
+
+    Pane.initialize();
+
+    p = Pane.zero();
+
+    Pane.destroy_zero(move(p));
+    
+    return;
+}
+
+//! new-transaction
+import {{default}}.Pane;
+
+main() {
+    let paneGino: Pane.T;
+    let paneLuigi: Pane.T;
+
+    paneGino = Pane.sforna_senza_licenza(5);
+    paneLuigi = Pane.sforna_senza_licenza(1);
+
+    paneLuigi = Pane.unisci(move(paneLuigi), move(paneGino));
+
+    Pane.distruggi(move(paneLuigi)); 
+    
+    return;
+}
+
+//! new-transaction
+import {{default}}.Pane;
+
+main() {
+    let paneGino: Pane.T;
+    let paneLuigi: Pane.T;
+
+    paneGino = Pane.sforna_senza_licenza(5);
+
+    //Gino si tiene 3, Luigi 2
+    paneGino, paneLuigi = Pane.spezza(move(paneGino), 2);
+
+    Pane.distruggi(move(paneLuigi)); 
+    Pane.distruggi(move(paneGino));
+    
+    return;
+}
